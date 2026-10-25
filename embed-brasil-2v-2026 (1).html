@@ -1,0 +1,224 @@
+<!-- ============================================================
+  Embed: Escrutinio segunda vuelta presidencial Brasil 2026
+  Fuente de datos: Tribunal Superior Eleitoral (TSE), archivos JSON públicos
+  Endpoint: https://resultados.tse.jus.br/oficial/ele2026/{eleicao}/dados/br/br-c0001-e{eleicao6}-u.json
+  Eleición 6258 = 2º turno (25/10/2026). Para probar antes de las 17:00 con datos
+  reales, cambiar data-eleicao="6258" por data-eleicao="6257" (1º turno, 04/10/2026).
+  Pegar este bloque completo en un módulo HTML del CMS.
+============================================================ -->
+<div id="chv-br26" data-eleicao="6258" data-intervalo="45">
+  <div class="chv-br26-head">
+    <span class="chv-br26-live"><span class="chv-br26-dot"></span>EN VIVO</span>
+    <h3 class="chv-br26-title">Brasil: segunda vuelta presidencial</h3>
+  </div>
+  <div class="chv-br26-progress">
+    <div class="chv-br26-progress-label">
+      <span>Mesas escrutadas</span><strong class="chv-br26-pst">0,00%</strong>
+    </div>
+    <div class="chv-br26-track"><div class="chv-br26-fill chv-br26-pst-bar"></div></div>
+    <div class="chv-br26-sub chv-br26-secoes"></div>
+  </div>
+  <div class="chv-br26-cands"></div>
+  <div class="chv-br26-extra"></div>
+  <div class="chv-br26-msg" hidden></div>
+  <div class="chv-br26-foot">
+    <span class="chv-br26-hora">Esperando datos del TSE</span>
+    <span>Fuente: Tribunal Superior Eleitoral (TSE)</span>
+  </div>
+</div>
+
+<style>
+#chv-br26{
+  --c-bg:#ffffff; --c-text:#14161a; --c-muted:#5c6370; --c-line:#e3e6ea; --c-track:#eef0f3;
+  --c-a:#0f7c8c; --c-b:#c9781a; --c-live:#d62828; --c-warn-bg:#fff4e0; --c-warn:#8a5300;
+  font-family: Arial, Helvetica, sans-serif; color:var(--c-text); background:var(--c-bg);
+  border:1px solid var(--c-line); border-radius:8px; padding:16px; max-width:720px;
+  margin:0 auto; box-sizing:border-box; line-height:1.35;
+}
+#chv-br26 *{box-sizing:border-box}
+#chv-br26 .chv-br26-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+#chv-br26 .chv-br26-title{margin:0;font-size:20px;font-weight:700}
+#chv-br26 .chv-br26-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;
+  color:#fff;background:var(--c-live);padding:3px 8px;border-radius:4px;letter-spacing:.5px}
+#chv-br26 .chv-br26-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:chvBr26Pulse 1.4s infinite}
+@keyframes chvBr26Pulse{0%,100%{opacity:1}50%{opacity:.25}}
+#chv-br26 .chv-br26-progress{margin-bottom:14px}
+#chv-br26 .chv-br26-progress-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px}
+#chv-br26 .chv-br26-track{height:8px;background:var(--c-track);border-radius:4px;overflow:hidden}
+#chv-br26 .chv-br26-fill{height:100%;width:0;background:var(--c-text);transition:width .6s ease}
+#chv-br26 .chv-br26-sub{font-size:12px;color:var(--c-muted);margin-top:4px}
+#chv-br26 .chv-br26-cand{padding:12px 0;border-top:1px solid var(--c-line)}
+#chv-br26 .chv-br26-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+#chv-br26 .chv-br26-name{font-size:17px;font-weight:700}
+#chv-br26 .chv-br26-party{font-size:13px;color:var(--c-muted);font-weight:400;margin-left:4px}
+#chv-br26 .chv-br26-pct{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+#chv-br26 .chv-br26-votes{font-size:13px;color:var(--c-muted);font-variant-numeric:tabular-nums}
+#chv-br26 .chv-br26-bar{height:14px;background:var(--c-track);border-radius:4px;overflow:hidden;margin-top:6px}
+#chv-br26 .chv-br26-bar > div{height:100%;width:0;transition:width .6s ease}
+#chv-br26 .chv-br26-badge{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--c-text);
+  padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:middle}
+#chv-br26 .chv-br26-extra{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--c-muted);
+  border-top:1px solid var(--c-line);padding-top:10px}
+#chv-br26 .chv-br26-extra:empty{display:none}
+#chv-br26 .chv-br26-msg{margin-top:12px;padding:10px 12px;border-radius:6px;font-size:14px;
+  background:var(--c-warn-bg);color:var(--c-warn)}
+#chv-br26 .chv-br26-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;
+  font-size:12px;color:var(--c-muted);margin-top:12px}
+@media (max-width:480px){
+  #chv-br26{padding:12px}
+  #chv-br26 .chv-br26-title{font-size:17px}
+  #chv-br26 .chv-br26-pct{font-size:20px}
+}
+</style>
+
+<script>
+(function () {
+  var root = document.getElementById('chv-br26');
+  if (!root) return;
+
+  var qp = (location.search.match(/[?&]eleicao=(\d{4})/) || [])[1];
+  var ELEICAO = qp || (/^\d{4}$/.test(window.name) ? window.name
+              : (root.getAttribute('data-eleicao') || '6258').trim());
+  var INTERVALO = Math.max(20, parseInt(root.getAttribute('data-intervalo'), 10) || 45) * 1000;
+  var pad6 = ('000000' + ELEICAO).slice(-6);
+  var URL_TSE = 'https://resultados.tse.jus.br/oficial/ele2026/' + ELEICAO +
+                '/dados/br/br-c0001-e' + pad6 + '-u.json';
+  var COLORES = ['var(--c-a)', 'var(--c-b)'];
+
+  var $ = function (sel) { return root.querySelector(sel); };
+  var ultimo = null;      // última lectura válida (dg+hg)
+  var timer = null;
+
+  // "33,82" -> 33.82 ; "1234567" -> 1234567
+  function num(v) {
+    if (v === undefined || v === null || v === '') return 0;
+    var n = parseFloat(String(v).replace(/\./g, '').replace(',', '.'));
+    return isNaN(n) ? 0 : n;
+  }
+  function pctTxt(v) { return (v === undefined || v === null || v === '') ? '0,00%' : String(v) + '%'; }
+  function miles(v) { return Math.round(num(v)).toLocaleString('es-CL'); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  // Recorre carg[] > agr[] > par[] > cand[]
+  function extraerCandidatos(d) {
+    var out = [];
+    (d.carg || []).forEach(function (c) {
+      (c.agr || []).forEach(function (a) {
+        (a.par || []).forEach(function (p) {
+          (p.cand || []).forEach(function (k) {
+            out.push({
+              n: k.n,
+              nombre: k.nmu || k.nm || '',
+              partido: p.sg || '',
+              vap: k.vap,
+              pvap: k.pvap,
+              st: k.st || ''
+            });
+          });
+        });
+      });
+    });
+    return out;
+  }
+
+  function mostrarMsg(txt) {
+    var m = $('.chv-br26-msg');
+    if (txt) { m.textContent = txt; m.hidden = false; } else { m.hidden = true; }
+  }
+
+  function render(d) {
+    var s = d.s || {}, v = d.v || {}, e = d.e || {};
+    var pst = num(s.pst);
+    var st = num(s.st);
+
+    $('.chv-br26-pst').textContent = pctTxt(s.pst || '0,00');
+    $('.chv-br26-pst-bar').style.width = Math.min(100, pst) + '%';
+    $('.chv-br26-secoes').textContent = s.ts
+      ? miles(s.st) + ' de ' + miles(s.ts) + ' mesas' : '';
+
+    var cands = extraerCandidatos(d);
+    // Color fijo por número de candidato (no cambia si cambia el liderazgo)
+    var porNumero = cands.slice().sort(function (a, b) { return num(a.n) - num(b.n); });
+    var color = {};
+    porNumero.forEach(function (c, i) { color[c.n] = COLORES[i % COLORES.length]; });
+
+    var cont = $('.chv-br26-cands');
+
+    if (st === 0) {
+      // Archivo publicado pero sin mesas escrutadas: no mostrar cifras en cero como resultado
+      cont.innerHTML = porNumero.map(function (c) {
+        return '<div class="chv-br26-cand"><div class="chv-br26-row">' +
+          '<span class="chv-br26-name">' + esc(c.nombre) +
+          '<span class="chv-br26-party">' + esc(c.partido) + ' ' + esc(c.n) + '</span></span>' +
+          '<span class="chv-br26-votes">Sin votos escrutados</span></div></div>';
+      }).join('');
+      $('.chv-br26-extra').innerHTML = '';
+      mostrarMsg('Aún no hay mesas escrutadas. El escrutinio comienza a las 17:00 (hora de Chile y de Brasilia).');
+    } else {
+      cands.sort(function (a, b) { return num(b.vap) - num(a.vap); });
+      cont.innerHTML = cands.map(function (c) {
+        var electo = pst >= 100 && /^eleit/i.test(c.st);
+        return '<div class="chv-br26-cand">' +
+          '<div class="chv-br26-row">' +
+            '<span class="chv-br26-name">' + esc(c.nombre) +
+              '<span class="chv-br26-party">' + esc(c.partido) + ' ' + esc(c.n) + '</span>' +
+              (electo ? '<span class="chv-br26-badge">ELECTO</span>' : '') + '</span>' +
+            '<span class="chv-br26-pct">' + esc(pctTxt(c.pvap)) + '</span>' +
+          '</div>' +
+          '<div class="chv-br26-votes">' + miles(c.vap) + ' votos</div>' +
+          '<div class="chv-br26-bar"><div style="width:' + Math.min(100, num(c.pvap)) +
+            '%;background:' + color[c.n] + '"></div></div>' +
+        '</div>';
+      }).join('');
+
+      var extra = [];
+      if (v.pvb !== undefined) extra.push('Blancos: ' + esc(pctTxt(v.pvb)));
+      if (v.ptvn !== undefined) extra.push('Nulos: ' + esc(pctTxt(v.ptvn)));
+      if (e.pa !== undefined) extra.push('Abstención: ' + esc(pctTxt(e.pa)));
+      $('.chv-br26-extra').innerHTML = extra.map(function (t) { return '<span>' + t + '</span>'; }).join('');
+      mostrarMsg('');
+    }
+
+    var fecha = d.dt || d.dg || '';
+    var hora = d.ht || d.hg || '';
+    $('.chv-br26-hora').textContent = (fecha || hora)
+      ? 'Actualizado: ' + fecha + ' ' + hora + ' (hora de Chile)'
+      : 'Esperando datos del TSE';
+
+    if (pst >= 100 && timer) {        // Escrutinio completo: bajar frecuencia a 5 minutos
+      clearInterval(timer);
+      timer = setInterval(cargar, 300000);
+    }
+  }
+
+  function cargar() {
+    fetch(URL_TSE, { cache: 'no-cache' })
+      .then(function (r) {
+        if (r.status === 404) throw { tipo: 'nopub' };
+        if (!r.ok) throw { tipo: 'http', status: r.status };
+        return r.json();
+      })
+      .then(function (d) {
+        var marca = (d.dg || '') + ' ' + (d.hg || '');
+        ultimo = marca;
+        render(d);
+      })
+      .catch(function (err) {
+        if (err && err.tipo === 'nopub' && !ultimo) {
+          mostrarMsg('El TSE aún no publica resultados. El escrutinio comienza a las 17:00 (hora de Chile).');
+        } else if (ultimo) {
+          mostrarMsg('Sin conexión con el TSE en este momento. Se muestran los últimos datos recibidos; se reintentará automáticamente.');
+        } else {
+          mostrarMsg('No fue posible conectar con el TSE. Se reintentará automáticamente.');
+        }
+      });
+  }
+
+  cargar();
+  timer = setInterval(cargar, INTERVALO);
+})();
+</script>
